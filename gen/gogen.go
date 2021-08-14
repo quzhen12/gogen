@@ -1,4 +1,4 @@
-package main
+package gen
 
 import (
 	"bufio"
@@ -22,7 +22,7 @@ type goGen interface {
 }
 
 type gGen struct {
-	g       goGen
+	G       goGen
 	dstPath string
 	srcPath string
 }
@@ -44,15 +44,15 @@ func (g *gGen) SrcPath() string {
 }
 
 func NewGen(g goGen) *gGen {
-	return &gGen{g: g}
+	return &gGen{G: g}
 }
 
 func (g *gGen) Gen(projectName string, path string) error {
-	err := g.g.SetProjectTemplate(path)
+	err := g.G.SetProjectTemplate(path)
 	if err != nil {
 		return err
 	}
-	err = g.g.SetProjectName(projectName)
+	err = g.G.SetProjectName(projectName)
 	if err != nil {
 		return err
 	}
@@ -60,10 +60,10 @@ func (g *gGen) Gen(projectName string, path string) error {
 	if err != nil {
 		fmt.Println("mkdir err", err)
 	}
-	return g.travels(path)
+	return g.Travels(path)
 }
 
-func (g *gGen) travels(pathname string) error {
+func (g *gGen) Travels(pathname string) error {
 	rd, err := ioutil.ReadDir(pathname)
 	if err != nil {
 		return err
@@ -80,7 +80,7 @@ func (g *gGen) travels(pathname string) error {
 			return err
 		}
 		if fi.IsDir() {
-			err := g.travels(childPath)
+			err := g.Travels(childPath)
 			if err != nil {
 				return err
 			}
@@ -98,7 +98,7 @@ func IsIgnored(name string) bool {
 }
 
 func (g *gGen) createFile() error {
-	data, err := g.g.Gen(g.srcPath)
+	data, err := g.G.Gen(g.srcPath)
 	if err != nil {
 		return err
 	}
@@ -128,5 +128,5 @@ func (g *gGen) path(filePath string) string {
 	if len(list) < 3 {
 		return ""
 	}
-	return path.Join(g.g.ProjectName(), path.Join(list[2:]...))
+	return path.Join(g.G.ProjectName(), path.Join(list[2:]...))
 }
