@@ -24,9 +24,10 @@ func main() {
 	flag.String("install", "", "install")
 	name := flag.String("name", "", "create")
 	pkg := flag.String("pkg", "", "pkg")
+	p := flag.String("p", "", "plugins")
 	flag.Parse()
-	fmt.Println("name: ", *name)
-	if *name == "" || *pkg == "" {
+	fmt.Println("name: ", *name, *p)
+	if *name == "" || *pkg == "" || *p == "" {
 		return
 	}
 	g := gen.NewGentor()
@@ -37,7 +38,7 @@ func main() {
 	if err != nil {
 		fmt.Println("mkdir err", err)
 	}
-	err = gg.Travels("temp/tmpweb")
+	err = gg.Travels(path.Join(config.PluginsDir, *p))
 	if err != nil {
 		fmt.Println(err)
 	}

@@ -3,6 +3,7 @@ package gen
 import (
 	"bufio"
 	"fmt"
+	"gogen/config"
 	"io"
 	"io/ioutil"
 	"os"
@@ -124,8 +125,12 @@ func (g *gGen) copyFile(f os.FileInfo) error {
 }
 
 func (g *gGen) path(filePath string) string {
-	list := strings.Split(filePath, "/")
-	if len(list) < 3 {
+	dir := strings.Split(filePath, config.PluginsDir)
+	if len(dir) < 2 {
+		return ""
+	}
+	list := strings.Split(dir[1], "/")
+	if len(list) < 2 {
 		return ""
 	}
 	return path.Join(g.G.ProjectName(), path.Join(list[2:]...))

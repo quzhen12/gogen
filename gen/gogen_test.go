@@ -18,7 +18,7 @@ func Test_travles(t *testing.T) {
 	if err != nil {
 		fmt.Println("mkdir err", err)
 	}
-	err = gg.Travels("temp/tmpweb")
+	err = gg.Travels("/usr/local/gogen/plugins/tmpweb")
 	if err != nil {
 		t.Log(err)
 	}
