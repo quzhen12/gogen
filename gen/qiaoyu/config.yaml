@@ -1,8 +1,0 @@
-app:
-  name: tmpweb
-  mode: debug
-db:
-  host: localhost
-  port: 3306
-  user: root
-  dbname: example
