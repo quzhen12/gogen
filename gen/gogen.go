@@ -112,7 +112,7 @@ func (g *gGen) createFile() error {
 func (g *gGen) createDir() error {
 	_, err := os.Stat(g.DstPath())
 	if os.IsNotExist(err) {
-		return os.Mkdir(g.DstPath(), 0700)
+		return os.Mkdir(g.DstPath(), 0777)
 	}
 	return nil
 }

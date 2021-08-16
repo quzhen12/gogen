@@ -11,7 +11,7 @@ const (
 
 func createDir(dir string) error {
 	if _, err := os.Stat(dir); os.IsNotExist(err) {
-		return os.Mkdir(dir, os.ModePerm)
+		return os.Mkdir(dir, 0777)
 	}
 	return nil
 }

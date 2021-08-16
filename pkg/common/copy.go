@@ -41,7 +41,7 @@ func copy(dst, src string, isDir bool) error {
 	if isDir {
 		_, err := os.Stat(dst)
 		if os.IsNotExist(err) {
-			return os.Mkdir(dst, 0700)
+			return os.Mkdir(dst, 0777)
 		}
 		return nil
 	}

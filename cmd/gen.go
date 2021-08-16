@@ -31,10 +31,6 @@ var genCmd = &cobra.Command{
 }
 
 func gogen() {
-	err := config.InitGoGen()
-	if err != nil {
-		fmt.Println("err", err)
-	}
 	p := plugins.NewPlugins()
 	pcfs, err := p.GetPluginsConfig()
 	if err != nil {

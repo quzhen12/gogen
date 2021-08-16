@@ -96,6 +96,6 @@ func savePluginsConfig(data map[string]interface{}) error {
 	}
 	cfg = append(cfg, data)
 	bb, _ := json.Marshal(cfg)
-	ioutil.WriteFile(c, bb, 0700)
+	ioutil.WriteFile(c, bb, 0777)
 	return nil
 }
