@@ -14,6 +14,7 @@ import (
 type PluginOpt interface {
 	Install(src string) error
 	Remove(src string) error
+	GetPluginsConfig() (map[string]*pluginsInfo, error)
 	Clean() error
 }
 
@@ -24,6 +25,20 @@ type pluginsInfo struct {
 
 type plugins struct {
 	info *pluginsInfo
+}
+
+func (p *plugins) GetPluginsConfig() (map[string]*pluginsInfo, error) {
+	var list []*pluginsInfo
+	c := path.Join(config.PluginsDir, "plugins.json")
+	b, _ := ioutil.ReadFile(c)
+	result := map[string]*pluginsInfo{}
+	if len(b) > 0 {
+		_ = json.Unmarshal(b, &list)
+	}
+	for _, v := range list {
+		result[v.AppName] = v
+	}
+	return result, nil
 }
 
 func NewPlugins() PluginOpt {

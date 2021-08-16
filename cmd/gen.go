@@ -1,17 +1,22 @@
 package cmd
 
 import (
-	"flag"
 	"fmt"
 	"gogen/config"
 	"gogen/gen"
+	"gogen/plugins"
 	"os"
 	"path"
 
 	"github.com/spf13/cobra"
 )
 
+var appName = ""
+var pluginsName = ""
+
 func init() {
+	rootCmd.PersistentFlags().StringVar(&appName, "app_name", "", "app name")
+	rootCmd.PersistentFlags().StringVar(&pluginsName, "plugins_name", "", "app name")
 	rootCmd.AddCommand(genCmd)
 }
 
@@ -30,24 +35,23 @@ func gogen() {
 	if err != nil {
 		fmt.Println("err", err)
 	}
-	flag.String("install", "", "install")
-	name := flag.String("name", "", "create")
-	pkg := flag.String("pkg", "", "pkg")
-	p := flag.String("p", "", "plugins")
-	flag.Parse()
-	fmt.Println("name: ", *name, *p)
-	if *name == "" || *pkg == "" || *p == "" {
+	p := plugins.NewPlugins()
+	pcfs, err := p.GetPluginsConfig()
+	if err != nil {
+		return
+	}
+	if appName == "" {
 		return
 	}
 	g := gen.NewGentor()
 	gg := gen.NewGen(g)
-	gg.G.SetProjectName(*name)
-	gg.G.SetOldProjectName(*pkg)
-	err = os.Mkdir("./"+*name, 0777)
+	gg.G.SetProjectName(appName)
+	gg.G.SetOldProjectName(pcfs[pluginsName].ProjectName)
+	err = os.Mkdir("./"+appName, 0777)
 	if err != nil {
 		fmt.Println("mkdir err", err)
 	}
-	err = gg.Travels(path.Join(config.PluginsDir, *p))
+	err = gg.Travels(path.Join(config.PluginsDir, pluginsName))
 	if err != nil {
 		fmt.Println(err)
 	}
