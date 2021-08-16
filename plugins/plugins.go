@@ -18,8 +18,8 @@ type PluginOpt interface {
 }
 
 type pluginsInfo struct {
-	AppName     string `mapstructure:"app_name"`
-	ProjectName string `mapstructure:"project_name"`
+	AppName     string `json:"app_name" mapstructure:"app_name"`
+	ProjectName string `json:"project_name" mapstructure:"project_name"`
 }
 
 type plugins struct {
@@ -39,9 +39,10 @@ func (p *plugins) Install(src string) error {
 	if err != nil {
 		return err
 	}
-	return savePluginsConfig(map[string]interface{}{
-		"app_name": p.info.AppName,
-	})
+	b, _ := json.Marshal(p.info)
+	data := map[string]interface{}{}
+	_ = json.Unmarshal(b, &data)
+	return savePluginsConfig(data)
 }
 
 func (p *plugins) loadPluginsConfig(src string) error {
