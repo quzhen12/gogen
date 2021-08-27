@@ -31,14 +31,12 @@ func NewGentor() *gen {
 	return &gen{}
 }
 
-func (g *gen) SetProjectTemplate(path string) error {
+func (g *gen) SetProjectTemplate(path string) {
 	g.path = path
-	return nil
 }
 
-func (g *gen) SetProjectName(projectName string) error {
+func (g *gen) SetProjectName(projectName string) {
 	g.projectName = projectName
-	return nil
 }
 
 func (g *gen) SetOldProjectName(projectName string) {

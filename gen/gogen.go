@@ -12,8 +12,8 @@ import (
 )
 
 type goGen interface {
-	SetProjectTemplate(path string) error
-	SetProjectName(projectName string) error
+	SetProjectTemplate(path string)
+	SetProjectName(projectName string)
 	SetOldProjectName(projectName string)
 	Gen(filePath string) (io.Reader, error)
 	ProjectName() string
@@ -49,15 +49,9 @@ func NewGen(g goGen) *gGen {
 }
 
 func (g *gGen) Gen(projectName string, path string) error {
-	err := g.G.SetProjectTemplate(path)
-	if err != nil {
-		return err
-	}
-	err = g.G.SetProjectName(projectName)
-	if err != nil {
-		return err
-	}
-	err = os.Mkdir("./"+projectName, 0777)
+	g.G.SetProjectTemplate(path)
+	g.G.SetProjectName(projectName)
+	err := os.Mkdir("./"+projectName, 0777)
 	if err != nil {
 		fmt.Println("mkdir err", err)
 	}
