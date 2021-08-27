@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"gogen/config"
 	"gogen/gen"
+	"gogen/pkg/common"
 	"gogen/plugins"
-	"os"
 	"path"
 
 	"github.com/spf13/cobra"
@@ -26,11 +26,11 @@ var genCmd = &cobra.Command{
 	Long:  "Generate a project by template that's installed.",
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("Success!")
-		gogen()
+		genProject()
 	},
 }
 
-func gogen() {
+func genProject() {
 	p := plugins.NewPlugins()
 	pcfs, err := p.GetPluginsConfig()
 	if err != nil {
@@ -43,9 +43,10 @@ func gogen() {
 	gg := gen.NewGen(g)
 	gg.G.SetProjectName(appName)
 	gg.G.SetOldProjectName(pcfs[pluginsName].ProjectName)
-	err = os.Mkdir("./"+appName, 0777)
+	err = common.Mkdir(appName)
 	if err != nil {
 		fmt.Println("mkdir err", err)
+		return
 	}
 	err = gg.Travels(path.Join(config.PluginsDir, pluginsName))
 	if err != nil {
