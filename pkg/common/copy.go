@@ -49,6 +49,6 @@ func copy(dst, src string, isDir bool) error {
 	if err != nil {
 		return err
 	}
-	return ioutil.WriteFile(dst, data, 0700)
+	return ioutil.WriteFile(dst, data, 0777)
 
 }

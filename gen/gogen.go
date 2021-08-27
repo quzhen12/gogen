@@ -104,7 +104,7 @@ func (g *gGen) createFile() error {
 		return err
 	}
 	buf := bufio.NewReader(data)
-	f, err := os.Create(g.DstPath())
+	f, err := os.OpenFile(g.DstPath(), os.O_CREATE|os.O_RDWR, 0777)
 	_, err = buf.WriteTo(f)
 	return err
 }
