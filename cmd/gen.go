@@ -51,7 +51,7 @@ func genProject() {
 		zap.L().Error("mkdir appName", zap.Any("err", err))
 		return
 	}
-	err = gg.Travels(path.Join(config.PluginsDir, pluginsName))
+	err = gg.Travels(path.Join(config.PluginsDir2, pluginsName))
 	if err != nil {
 		zap.L().Error("travel", zap.Any("err", err))
 	}

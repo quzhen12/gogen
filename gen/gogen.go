@@ -119,7 +119,7 @@ func (g *gGen) copyFile(f os.FileInfo) error {
 }
 
 func (g *gGen) path(filePath string) string {
-	dir := strings.Split(filePath, config.PluginsDir)
+	dir := strings.Split(filePath, config.PluginsDir2)
 	if len(dir) < 2 {
 		return ""
 	}

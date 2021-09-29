@@ -29,7 +29,7 @@ type plugins struct {
 
 func (p *plugins) GetPluginsConfig() (map[string]*pluginsInfo, error) {
 	var list []*pluginsInfo
-	c := path.Join(config.PluginsDir, "plugins.json")
+	c := path.Join(config.PluginsDir2, "plugins.json")
 	b, _ := ioutil.ReadFile(c)
 	result := map[string]*pluginsInfo{}
 	if len(b) > 0 {
@@ -50,7 +50,7 @@ func (p *plugins) Install(src string) error {
 	if err != nil {
 		return err
 	}
-	err = common.CopyFiles(config.PluginsDir, src)
+	err = common.CopyFiles(config.PluginsDir2, src)
 	if err != nil {
 		return err
 	}
@@ -87,7 +87,7 @@ func (p *plugins) Clean() error {
 }
 
 func savePluginsConfig(data map[string]interface{}) error {
-	c := path.Join(config.PluginsDir, "plugins.json")
+	c := path.Join(config.PluginsDir2, "plugins.json")
 	b, _ := ioutil.ReadFile(c)
 
 	cfg := []map[string]interface{}{}

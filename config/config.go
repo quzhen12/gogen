@@ -1,14 +1,15 @@
 package config
 
 import (
+	"fmt"
 	"log"
 	"os"
 )
 
 var (
-	homeDir     = "/usr/local/gogen"
-	PluginsDir  = homeDir + "/plugins"
-	pluginsJson = PluginsDir + "/plugins.json"
+	homeDir = "/usr/local/gogen"
+	// 即将废弃
+	PluginsDir2 = homeDir + "/plugins"
 )
 
 func createDir(dir string) error {
@@ -23,8 +24,7 @@ func createFile() error {
 }
 
 func InitGoGen() error {
-	PluginsDir = UserHomeDir() + "/plugins"
-	dirList := []string{UserHomeDir(), PluginsDir}
+	dirList := []string{UserHomeDir(), PluginsDir()}
 	for _, dir := range dirList {
 		if err := createDir(dir); err != nil {
 			return err
@@ -40,4 +40,8 @@ func UserHomeDir() string {
 		return homeDir
 	}
 	return h + "/gogen"
+}
+
+func PluginsDir() string {
+	return fmt.Sprintf("%s/%s", UserHomeDir(), "plugins")
 }
