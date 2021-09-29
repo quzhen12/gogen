@@ -1,11 +1,13 @@
 package config
 
-import "os"
+import (
+	"log"
+	"os"
+)
 
-const (
-	homeDir    = "/usr/local/gogen"
-	PluginsDir = homeDir + "/plugins"
-
+var (
+	homeDir     = "/usr/local/gogen"
+	PluginsDir  = homeDir + "/plugins"
 	pluginsJson = PluginsDir + "/plugins.json"
 )
 
@@ -21,11 +23,21 @@ func createFile() error {
 }
 
 func InitGoGen() error {
-	dirList := []string{homeDir, PluginsDir}
+	PluginsDir = UserHomeDir() + "/plugins"
+	dirList := []string{UserHomeDir(), PluginsDir}
 	for _, dir := range dirList {
 		if err := createDir(dir); err != nil {
 			return err
 		}
 	}
 	return nil
+}
+
+func UserHomeDir() string {
+	h, err := os.UserHomeDir()
+	if err != nil {
+		log.Println("UserHomeDir error:", err)
+		return homeDir
+	}
+	return h + "/gogen"
 }
