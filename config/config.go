@@ -1,9 +1,12 @@
 package config
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
+	"path"
 )
 
 var (
@@ -44,4 +47,27 @@ func UserHomeDir() string {
 
 func PluginsDir() string {
 	return fmt.Sprintf("%s/%s", UserHomeDir(), "plugins")
+}
+
+type Plugin struct {
+	AppName    string
+	PluginName string
+}
+type pluginJson []*Plugin
+
+func getPluginsJson() pluginJson {
+	c := path.Join(PluginsDir(), "plugins.json")
+	b, _ := ioutil.ReadFile(c)
+	var list pluginJson
+	if len(b) > 0 {
+		_ = json.Unmarshal(b, &list)
+	}
+	return list
+}
+
+func SavePluginsJson(data *Plugin) error {
+	c := path.Join(PluginsDir(), "plugins.json")
+	list := getPluginsJson()
+	b2, _ := json.Marshal(append(list, data))
+	return ioutil.WriteFile(c, b2, os.ModePerm)
 }

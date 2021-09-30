@@ -2,21 +2,22 @@ package plugins
 
 import (
 	"encoding/json"
-	"fmt"
 	"gogen/config"
 	"gogen/pkg/common"
 	"io/ioutil"
 	"path"
 
+	common2 "github.com/quzhen12/plugins/common"
+
 	"github.com/spf13/viper"
 )
 
-type PluginOpt interface {
-	Install(src string) error
-	Remove(src string) error
-	GetPluginsConfig() (map[string]*pluginsInfo, error)
-	Clean() error
-}
+//type PluginOpt interface {
+//	Install(src string) error
+//	Remove(src string) error
+//	GetPluginsConfig() (map[string]*pluginsInfo, error)
+//	Clean() error
+//}
 
 type pluginsInfo struct {
 	AppName     string `json:"app_name" mapstructure:"app_name"`
@@ -29,7 +30,7 @@ type plugins struct {
 
 func (p *plugins) GetPluginsConfig() (map[string]*pluginsInfo, error) {
 	var list []*pluginsInfo
-	c := path.Join(config.PluginsDir2, "plugins.json")
+	c := path.Join(config.PluginsDir(), "plugins.json")
 	b, _ := ioutil.ReadFile(c)
 	result := map[string]*pluginsInfo{}
 	if len(b) > 0 {
@@ -41,7 +42,7 @@ func (p *plugins) GetPluginsConfig() (map[string]*pluginsInfo, error) {
 	return result, nil
 }
 
-func NewPlugins() PluginOpt {
+func NewPlugins() *plugins {
 	return &plugins{}
 }
 
@@ -54,10 +55,9 @@ func (p *plugins) Install(src string) error {
 	if err != nil {
 		return err
 	}
-	b, _ := json.Marshal(p.info)
-	data := map[string]interface{}{}
-	_ = json.Unmarshal(b, &data)
-	return savePluginsConfig(data)
+	var data *config.Plugin
+	_ = common2.MarshalBind(p.info, data)
+	return config.SavePluginsJson(data)
 }
 
 func (p *plugins) loadPluginsConfig(src string) error {
@@ -74,28 +74,5 @@ func (p *plugins) loadPluginsConfig(src string) error {
 		return err
 	}
 	p.info = info
-	fmt.Println("name", viper.GetString("app_name"))
-	return nil
-}
-
-func (p *plugins) Remove(src string) error {
-	panic("implement me")
-}
-
-func (p *plugins) Clean() error {
-	panic("implement me")
-}
-
-func savePluginsConfig(data map[string]interface{}) error {
-	c := path.Join(config.PluginsDir2, "plugins.json")
-	b, _ := ioutil.ReadFile(c)
-
-	cfg := []map[string]interface{}{}
-	if len(b) > 0 {
-		_ = json.Unmarshal(b, &cfg)
-	}
-	cfg = append(cfg, data)
-	bb, _ := json.Marshal(cfg)
-	ioutil.WriteFile(c, bb, 0777)
 	return nil
 }

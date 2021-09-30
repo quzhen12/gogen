@@ -20,7 +20,6 @@ var installCmd = &cobra.Command{
 	Long:  `All software has versions. This is Hugo's`,
 	Run: func(cmd *cobra.Command, args []string) {
 		p := plugins.NewPlugins()
-		fmt.Println("pkg src", pkgSrc)
 		if pkgSrc == "" {
 			return
 		}

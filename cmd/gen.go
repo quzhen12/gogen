@@ -7,7 +7,7 @@ import (
 	"gogen/plugins"
 	"path"
 
-	"github.com/quzhen12/plugins/common"
+	"github.com/quzhen12/plugins/file"
 
 	"go.uber.org/zap"
 
@@ -46,12 +46,12 @@ func genProject() {
 	gg := gen.NewGen(g)
 	gg.G.SetProjectName(appName)
 	gg.G.SetOldProjectName(pcfs[pluginsName].ProjectName)
-	err = common.Mkdir(appName)
+	err = file.Mkdir(appName)
 	if err != nil {
 		zap.L().Error("mkdir appName", zap.Any("err", err))
 		return
 	}
-	err = gg.Travels(path.Join(config.PluginsDir2, pluginsName))
+	err = gg.Travels(path.Join(config.PluginsDir(), pluginsName))
 	if err != nil {
 		zap.L().Error("travel", zap.Any("err", err))
 	}
