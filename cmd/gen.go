@@ -9,8 +9,6 @@ import (
 
 	"github.com/quzhen12/plugins/file"
 
-	"go.uber.org/zap"
-
 	"github.com/spf13/cobra"
 )
 
@@ -48,11 +46,9 @@ func genProject() {
 	gg.G.SetOldProjectName(pcfs[pluginsName].ProjectName)
 	err = file.Mkdir(appName)
 	if err != nil {
-		zap.L().Error("mkdir appName", zap.Any("err", err))
 		return
 	}
 	err = gg.Travels(path.Join(config.PluginsDir(), pluginsName))
 	if err != nil {
-		zap.L().Error("travel", zap.Any("err", err))
 	}
 }

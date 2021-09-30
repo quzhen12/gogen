@@ -12,7 +12,7 @@ import (
 var (
 	homeDir = "/usr/local/gogen"
 	// 即将废弃
-	PluginsDir2 = homeDir + "/plugins"
+	PluginsDir2 = UserHomeDir() + "/plugins"
 )
 
 func createDir(dir string) error {
